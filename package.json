@@ -1,0 +1,15 @@
+{
+  "name": "Useful-UnitTest-Mocks",
+  "version": "1.0.0",
+  "description": "A few useful mocks / utilities for your set up to make writing tests easier",
+  "main": "mocks_boilerplate.js",
+  "repository": "https://github.com/jaranF/BB-DOM-Event-Relay.git",
+  "author": "JaranF <JaranMclarn@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "jasmine-core": "2.6.4",
+    "karma": "1.7.0",
+    "karma-chrome-launcher": "2.2.0",
+    "karma-jasmine": "1.1.0"
+  }
+}
