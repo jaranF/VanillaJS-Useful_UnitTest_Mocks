@@ -15,30 +15,15 @@ var mocks = (function() {
       window.Date = function (a, b, c, d, e, f, g) {
         var mockDateObject;
         var __D = mocks.__Date;
-        if (Date.mockNow !== undefined && a === undefined) {
-          if (Object.prototype.toString.call(Date.mockNow) === '[object Array]') {
-            mockDateObject = new __D(__D.UTC.apply({}, Date.mockNow));
-          } else {
-            mockDateObject = new __D(Date.mockNow);
-          }
+        var args = arguments;
+        if (Date.mockNow !== undefined) {
+          args = Object.prototype.toString.call(Date.mockNow) === '[object Array]' ? Date.mockNow : [Date.mockNow];
+          a = args[0];
+        }
+        if (a === undefined) {
+          mockDateObject = new __D();
         } else {
-          if (a === undefined) {
-            mockDateObject = new __D();
-          } else if (b === undefined) {
-            mockDateObject = new __D(a);
-          } else if (c === undefined) {
-            mockDateObject = new __D(a, b);
-          } else if (d === undefined) {
-            mockDateObject = new __D(a, b, c);
-          } else if (e === undefined) {
-            mockDateObject = new __D(a, b, c, d);
-          } else if (f === undefined) {
-            mockDateObject = new __D(a, b, c, d, e);
-          } else if (g === undefined) {
-            mockDateObject = new __D(a, b, c, d, e, f);
-          } else {
-            mockDateObject = new __D(a, b, c, d, e, f, g);
-          }
+          mockDateObject = typeof a === 'string' ? new __D(__D.parse.apply({}, args)) : new __D(__D.UTC.apply({}, args));
         }
         return mockDateObject;
       };
