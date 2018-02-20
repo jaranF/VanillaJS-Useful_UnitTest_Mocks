@@ -11,9 +11,8 @@ Point 1: Say, that the code you want to test has a `new Date()` in it; the date 
 # Using The Code (For The Date Constructor Mock)
  As mentioned, just paste the code into your "set up" and "teardown"
 ## Jasmine Usage (Setup and Teardown)
-
 ```javascript
-    describe('My Module, function() {
+    describe("My Module", function() {
 
       var customDate = {};
 
