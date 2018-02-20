@@ -62,10 +62,10 @@ Point 1: Say, that the code you want to test has a `new Date()` in it; the date 
 
 
 
-## nUnit Usage (Setup and Teardown)
+
 ```
 
- ...
+## nUnit Usage (Setup and Teardown)
 ```javascript
      var customDate = {};
      TestCase("My Test case",
@@ -117,7 +117,21 @@ Point 1: Say, that the code you want to test has a `new Date()` in it; the date 
       var Date.mockNow = "Thu Jun 26 2014 00:37:00 GMT+0100 (BST)"
       console.log(new Date()); // displays midnight Thursday Jan 1st, 1970 not the actual today's date.
 
+# How To Run The Tests That Test The Date Mock
+NB I don't have unit tests on the private method exposer since it doesn't really seem worthwhile given that it's use case is so niche.
 
+The code is in 'mocks_boilerplate.js'. NodeJS and Yarn are also required to run the unit tests. On that subject, the commands below are good for Mac Terminal or Git Shell Command Line.
+```Shell
+git clone git@github.com:jaranF/VanillaJS-Useful_UnitTest_Mocks.git
+cd VanillaJS-Useful_UnitTest_Mocks
+yarn install
+karma start karma.conf.js &
+karma run
+```
 
-
+Note the last two commands assume that you have the 'karma-cli' NPM package installed globally already. If the karma commands above do not work it is probably because you haven't, so just put this in front of the karma command `./node_modules/karma/bin/`. Once you finished with the unit tests and you want to kill the karma process run these commands:
+```Shell
+ps -Aa | grep '.*karma start.*' # The number that appears in the left hand column is used for next command
+kill -s HUP <number>
+```
 
