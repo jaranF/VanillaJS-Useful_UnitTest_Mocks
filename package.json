@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A few useful mocks / utilities for your set up to make writing tests easier",
   "main": "mocks_boilerplate.js",
-  "repository": "https://github.com/jaranF/BB-DOM-Event-Relay.git",
+  "repository": "https://github.com/jaranF/VanillaJS-Useful_UnitTest_Mocks.git",
   "author": "JaranF <JaranMclarn@gmail.com>",
   "license": "MIT",
   "dependencies": {
