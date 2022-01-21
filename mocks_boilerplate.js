@@ -13,22 +13,15 @@ var customDate = (function() {
       }
       customDate.__NativeDate = window.Date;
       window.Date = function (a) {
-        var mockDateObject;
-        var __D = customDate.__NativeDate;
-        var args = arguments;
+        let args = Array.from(arguments);
         if (Date.mockNow !== undefined) {
-          args = Object.prototype.toString.call(Date.mockNow) === '[object Array]' ? Date.mockNow : [Date.mockNow];
+          args = Array.isArray(Date.mockNow) ? Date.mockNow : [Date.mockNow];
           a = args[0];
         }
-        if (a === undefined) {
-          mockDateObject = new customDate.__NativeDate();
-        } else {
-          mockDateObject = typeof a === 'string' ? new __D(__D.parse.apply({}, args)) : new __D(__D.UTC.apply({}, args));
-        }
-        return mockDateObject;
+        return new customDate.__NativeDate(...args);
       };
       Date.UTC = function () {
-        return customDate.__NativeDate.UTC.apply([], arguments);
+        return customDate.__NativeDate.UTC(...arguments);
       };
       Date.now = function () {
         return Date.mockNow !== undefined ? (new Date()).valueOf() : customDate.__NativeDate.now();
@@ -48,6 +41,3 @@ var customDate = (function() {
     }
   };
 })();
-//mocks.usageInSetup();
-//Date.mockNow = [2000,01,02,03,04,05];
-//console.log(new Date());

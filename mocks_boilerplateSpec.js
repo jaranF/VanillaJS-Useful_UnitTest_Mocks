@@ -1,145 +1,1 @@
-describe('Date Mock', function() {
-
-  it('should allow the hotwiring of \'new Date()\' to a specific hardcoded value', function() {
-    customDate.usageInSetup();
-    // An obvious example; 1 hour and two and half minutes passed midight on Jan 1 1970
-    // 0 milliesconds + 30 seconds + 2 minutes + 1 hour (1000 * (30 + 120 + 3600))
-    Date.mockNow = "Thu Jan 1 1970 01:02:30 GMT+0000 (GMT)";
-    expect((new Date()).valueOf()).toEqual(3750000);
-    Date.mockNow = "Fri Jun 6 2014 09:37:00 GMT+0100 (BST)";
-    expect((new Date()).valueOf()).toEqual(1402043820000);
-    customDate.usageInTeardown();
-  });
-  it('should be unobtrusive and allow  \'new Date()\' to do it\'s usual thing (i.e. return today\'s date if \'mockNow\' is not present', function() {
-    customDate.usageInSetup();
-    Date.mockNow = "Thu Jan 1 1970 01:02:30 GMT+0000 (GMT)";
-    expect((new Date()).valueOf()).toEqual(3750000);
-    delete Date.mockNow;
-    var usual = new Date();
-    expect(usual.getFullYear()).toBeGreaterThanOrEqual(2018);
-    customDate.usageInTeardown();
-  });
-  it('should allow an array input when hotwiring \'new Date()\' to a specific hardcoded value', function() {
-    customDate.usageInSetup();
-    // Where 86400000 milliseconds in a day
-    Date.mockNow = [1970, 11, 31, 9, 10, 11];
-    // The last day of the year (1970 is not a leap year so is 365 days length)
-    // (86400000 * 364) + (9 * 3600 + 1000) + (10 * 6000) + (11 * 1000)
-    expect((new Date()).valueOf()).toEqual(31482611000);
-    customDate.usageInTeardown();
-  });
-  it('should be able to utilize all the usual Date instance methods despite being mocked', function() {
-    var dateMethods = ['getDate', 'getDay', 'getFullYear', 'getHours', 'getMilliseconds', 'getMinutes', 'getMonth', 'getSeconds', 'getTime', 'getTimezoneOffset', 'getUTCDate', 'getUTCDay', 'getUTCFullYear', 'getUTCHours', 'getUTCMilliseconds', 'getUTCMinutes', 'getUTCMonth', 'getUTCSeconds', 'setDate', 'setFullYear', 'setHours', 'setMilliseconds', 'setMinutes', 'setMonth', 'setSeconds', 'setTime', 'setUTCDate', 'setUTCFullYear', 'setUTCHours', 'setUTCMilliseconds', 'setUTCMinutes', 'setUTCMonth', 'setUTCSeconds'];
-    var obj;
-    customDate.usageInSetup();
-    var date = new Date();
-    obj = Object.getPrototypeOf ? Object.getPrototypeOf(date) : date;
-    for (var i = 0; i < dateMethods.length; i++) {
-      expect(date[dateMethods[i]]).toBeDefined();
-    }
-    customDate.usageInTeardown();
-  });
-  it('should be able to restore the native JavaScript Date object', function() {
-    expect(Date.toString()).toMatch(/.*native code.*/i);
-    customDate.usageInSetup();
-    Date.mockNow = [1970, 0, 1, 1, 59, 59];
-    expect(Date.toString()).not.toMatch(/.*native code.*/i);
-    customDate.usageInTeardown();
-    expect(Date.toString()).toMatch(/.*native code.*/i);
-    expect(Date.mockNow).toBeUndefined();
-  });
-  it("should handle one argument being passed to the mocked constructor to make a date", function () {
-    var arg1 = "Thu Jun 26 2014 00:37:00 GMT+0100 (BST)";
-    var d1 = new Date(arg1);
-    customDate.usageInSetup();
-    var d2 = new Date(arg1);
-    expect(d1.valueOf()).toEqual(d2.valueOf());
-    customDate.usageInTeardown();
-  });
-  it("should handle two arguments being passed to the mocked constructor to make a date", function () {
-    var arg1 = 2018,
-        arg2 = 1;
-    var d1 = new Date(arg1, arg2);
-    customDate.usageInSetup();
-    var d2 = new Date(arg1, arg2);
-    expect(d1.valueOf()).toEqual(d2.valueOf());
-    customDate.usageInTeardown();
-  });
-  it("should handle three arguments being passed to the mocked constructor to make a date", function () {
-    var arg1 = 2018,
-        arg2 = 1,
-        arg3 = 14;
-    var d1 = new Date(arg1, arg2, arg3);
-    customDate.usageInSetup();
-    var d2 = new Date(arg1, arg2, arg3);
-    expect(d1.valueOf()).toEqual(d2.valueOf());
-    customDate.usageInTeardown();
-  });
-  it("should handle four arguments being passed to the mocked constructor to make a date", function () {
-    var arg1 = 2018,
-        arg2 = 1,
-        arg3 = 14,
-        arg4 = 18;
-    var d1 = new Date(arg1, arg2, arg3, arg4);
-    customDate.usageInSetup();
-    var d2 = new Date(arg1, arg2, arg3, arg4);
-    expect(d1.valueOf()).toEqual(d2.valueOf());
-    customDate.usageInTeardown();
-  });
-  it("should handle five arguments being passed to the mocked constructor to make a date", function () {
-    var arg1 = 2018,
-        arg2 = 1,
-        arg3 = 14,
-        arg4 = 18,
-        arg5 = 30;
-    var d1 = new Date(arg1, arg2, arg3, arg4, arg5);
-    customDate.usageInSetup();
-    var d2 = new Date(arg1, arg2, arg3, arg4, arg5);
-    expect(d1.valueOf()).toEqual(d2.valueOf());
-    customDate.usageInTeardown();
-  });
-  it("should handle six arguments being passed to the mocked constructor to make a date", function () {
-    var arg1 = 2018,
-        arg2 = 1,
-        arg3 = 14,
-        arg4 = 18,
-        arg5 = 30,
-        arg6 = 59;
-    var d1 = new Date(arg1, arg2, arg3, arg4, arg5, arg6);
-    customDate.usageInSetup();
-    var d2 = new Date(arg1, arg2, arg3, arg4, arg5, arg6);
-    expect(d1.valueOf()).toEqual(d2.valueOf());
-    customDate.usageInTeardown();
-  });
-  it("should handle seven arguments being passed to the mocked constructor to make a date", function () {
-    var arg1 = 2018,
-        arg2 = 1,
-        arg3 = 14,
-        arg4 = 18,
-        arg5 = 30,
-        arg6 = 59,
-        arg7 = 9999;
-    var d1 = new Date(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-    customDate.usageInSetup();
-    var d2 = new Date(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-    expect(d1.valueOf()).toEqual(d2.valueOf());
-  });
-  it("should mock the \'Date.now()\' static method", function () {
-    customDate.usageInSetup();
-    // Where 86400000 milliseconds in a day
-    Date.mockNow = [1970, 11, 31, 9, 10, 11];
-    expect(Date.now().valueOf()).toEqual(31482611000);
-  });
-  it("should mock the \'Date.parse()\' static method", function () {
-    var expected = Date.parse("Thu Jun 26 2014 00:37:00 GMT+0100 (BST)");
-    customDate.usageInSetup();
-    var result = Date.parse("Thu Jun 26 2014 00:37:00 GMT+0100 (BST)");
-    expect(result).toEqual(expected);
-  });
-  it("should mock the \'Date.UTC()\' static method", function () {
-    var expected = Date.UTC(2018, 11, 31, 23, 59, 50);
-    customDate.usageInSetup();
-    var result = Date.UTC(2018, 11, 31, 23, 59, 50);
-    expect(result).toEqual(expected);
-  });
-});
+describe('Date Mock', function() {  it('should allow the hotwiring of \'new Date()\' to a specific hardcoded value', function() {    customDate.usageInSetup();    // The UNIX timestamp epoch started on Jan 1st 1970 so why the 1971 date?    // I wanted to keep the Maths simple but it turns out that my locale (United Kingdom)    // at the time of the UNIX epoch was undergoing an experiment whereby the country    // permanently stayed on British Summer Time (aka British Standard Time). See    // http://hansard.millbanksystems.com/commons/1967/mar/23/business-of-the-house#column_1922    // And this quirk of history seems to have been missed in some earlier browsers, so to ensure    // consistency, I changed the date I used for test purposes to 1971 Nov 1st when the Repealed    // Act mean things went back to normal.    // An obvious example; two and half minutes passed midnight on Nov 1 1971    // Where 86400000 milliseconds in a day and 365 * 86400000 ms  = 31536000000 milliseconds in a year    // 1YEAR + 86400000 * 304 days (i.e. 31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31) + (150secs * 1000)    // 31536000000ms * (86400000 * 304) + 150000 = 57801750000    Date.mockNow = "Mon Nov 01 1971 00:02:30 GMT+0000 (Greenwich Mean Time)";    expect((new Date()).valueOf()).toEqual(57801750000);    Date.mockNow = "Fri Jun 6 2014 09:37:00 GMT+0100 (BST)";    expect((new Date()).valueOf()).toEqual(1402043820000);    customDate.usageInTeardown();  });  it('should be unobtrusive and allow \'new Date()\' to do it\'s usual thing (i.e. return today\'s date if \'mockNow\' is not present', function() {    customDate.usageInSetup();    Date.mockNow = "Mon Nov 01 1971 00:02:30 GMT+0000 (Greenwich Mean Time)";    expect((new Date()).valueOf()).toEqual(57801750000);    delete Date.mockNow;    var usual = new Date();    expect(usual.getFullYear()).toBeGreaterThanOrEqual(2018);    customDate.usageInTeardown();  });  it('should allow an array input when hotwiring \'new Date()\' to a specific hardcoded value', function() {    customDate.usageInSetup();    // Where 86400000 milliseconds in a day and 365 * 86400000 ms  = 31536000000 milliseconds in a year    Date.mockNow = [1971, 11, 31, 9, 10, 11];  //Dec 31st 1971, 09:10:11 am    // The last day of the year 1971 (neither 1970 or 1971 were leap years so 365 days length)    // 31536000000 + (86400000 * 364) + (9 * 3600 + 1000) + (10 * 60000) + (11 * 1000)    expect((new Date()).valueOf()).toEqual(63018611000);    customDate.usageInTeardown();  });  it('should be able to utilize all the usual Date instance methods despite being mocked', function() {    var dateMethods = ['getDate', 'getDay', 'getFullYear', 'getHours', 'getMilliseconds', 'getMinutes', 'getMonth', 'getSeconds', 'getTime', 'getTimezoneOffset', 'getUTCDate', 'getUTCDay', 'getUTCFullYear', 'getUTCHours', 'getUTCMilliseconds', 'getUTCMinutes', 'getUTCMonth', 'getUTCSeconds', 'setDate', 'setFullYear', 'setHours', 'setMilliseconds', 'setMinutes', 'setMonth', 'setSeconds', 'setTime', 'setUTCDate', 'setUTCFullYear', 'setUTCHours', 'setUTCMilliseconds', 'setUTCMinutes', 'setUTCMonth', 'setUTCSeconds'];    var obj;    customDate.usageInSetup();    var date = new Date();    obj = Object.getPrototypeOf ? Object.getPrototypeOf(date) : date;    for (var i = 0; i < dateMethods.length; i++) {      expect(date[dateMethods[i]]).toBeDefined();    }    customDate.usageInTeardown();  });  it('should be able to restore the native JavaScript Date object', function() {    expect(Date.toString()).toMatch(/.*native code.*/i);    customDate.usageInSetup();    Date.mockNow = [1970, 0, 1, 1, 59, 59];    expect(Date.toString()).not.toMatch(/.*native code.*/i);    customDate.usageInTeardown();    expect(Date.toString()).toMatch(/.*native code.*/i);    expect(Date.mockNow).toBeUndefined();  });  it("should handle one argument being passed to the mocked constructor to make a date", function () {    customDate.usageInTeardown();    var arg1 = "Thu Jun 26 2014 00:37:00 GMT+0100 (BST)";    var d1 = new Date(arg1);    customDate.usageInSetup();    var d2 = new Date(arg1);    expect(d1.valueOf()).toEqual(d2.valueOf());    customDate.usageInTeardown();  });  it("should handle two arguments being passed to the mocked constructor to make a date", function () {    customDate.usageInTeardown();    var arg1 = 2018,      arg2 = 1;    var d1 = new Date(arg1, arg2);    customDate.usageInSetup();    var d2 = new Date(arg1, arg2);    expect(d1.valueOf()).toEqual(d2.valueOf());    customDate.usageInTeardown();  });  it("should handle three arguments being passed to the mocked constructor to make a date", function () {    customDate.usageInTeardown();    var arg1 = 2018,      arg2 = 1,      arg3 = 14;    var d1 = new Date(arg1, arg2, arg3);    customDate.usageInSetup();    var d2 = new Date(arg1, arg2, arg3);    expect(d1.valueOf()).toEqual(d2.valueOf());    customDate.usageInTeardown();  });  it("should handle four arguments being passed to the mocked constructor to make a date", function () {    customDate.usageInTeardown();    var arg1 = 2018,      arg2 = 1,      arg3 = 14,      arg4 = 18;    var d1 = new Date(arg1, arg2, arg3, arg4);    customDate.usageInSetup();    var d2 = new Date(arg1, arg2, arg3, arg4);    expect(d1.valueOf()).toEqual(d2.valueOf());    customDate.usageInTeardown();  });  it("should handle five arguments being passed to the mocked constructor to make a date", function () {    customDate.usageInTeardown();    var arg1 = 2018,      arg2 = 1,      arg3 = 14,      arg4 = 18,      arg5 = 30;    var d1 = new Date(arg1, arg2, arg3, arg4, arg5);    customDate.usageInSetup();    var d2 = new Date(arg1, arg2, arg3, arg4, arg5);    expect(d1.valueOf()).toEqual(d2.valueOf());    customDate.usageInTeardown();  });  it("should handle six arguments being passed to the mocked constructor to make a date", function () {    customDate.usageInTeardown();    var arg1 = 2018,      arg2 = 1,      arg3 = 14,      arg4 = 18,      arg5 = 30,      arg6 = 59;    var d1 = new Date(arg1, arg2, arg3, arg4, arg5, arg6);    customDate.usageInSetup();    var d2 = new Date(arg1, arg2, arg3, arg4, arg5, arg6);    expect(d1.valueOf()).toEqual(d2.valueOf());    customDate.usageInTeardown();  });  it("should handle seven arguments being passed to the mocked constructor to make a date", function () {    customDate.usageInTeardown();    var arg1 = 2018,      arg2 = 1,      arg3 = 14,      arg4 = 18,      arg5 = 30,      arg6 = 59,      arg7 = 9999;    var d1 = new Date(arg1, arg2, arg3, arg4, arg5, arg6, arg7);    customDate.usageInSetup();    var d2 = new Date(arg1, arg2, arg3, arg4, arg5, arg6, arg7);    expect(d1.valueOf()).toEqual(d2.valueOf());  });  it("should mock the \'Date.now()\' static method", function () {    customDate.usageInTeardown();    expect(Date.now.toString()).toMatch(/.*native code.*/i);    customDate.usageInSetup();    Date.mockNow = [1971, 11, 31, 9, 10, 11];    expect(Date.now.toString()).not.toMatch(/.*native code.*/i);    expect(Date.now().valueOf()).toEqual(63018611000);  });  it("should mock the \'Date.parse()\' static method", function () {    customDate.usageInTeardown();    expect(Date.parse.toString()).toMatch(/.*native code.*/i);    var expected = Date.parse("Thu Jun 26 2014 00:37:00 GMT+0100 (BST)");    customDate.usageInSetup();    var result = Date.parse("Thu Jun 26 2014 00:37:00 GMT+0100 (BST)");    expect(result).toEqual(expected);  });  it("should mock the \'Date.UTC()\' static method", function () {    customDate.usageInTeardown();    var expected = Date.UTC(2018, 11, 31, 23, 59, 50);    customDate.usageInSetup();    var result = Date.UTC(2018, 11, 31, 23, 59, 50);    expect(result).toEqual(expected);  });});
