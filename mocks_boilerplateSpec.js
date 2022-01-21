@@ -130,13 +130,13 @@ describe('Date Mock', function() {
     Date.mockNow = [1970, 11, 31, 9, 10, 11];
     expect(Date.now().valueOf()).toEqual(31482611000);
   });
-  it("should mock the \'Date.now()\' static method", function () {
+  it("should mock the \'Date.parse()\' static method", function () {
     var expected = Date.parse("Thu Jun 26 2014 00:37:00 GMT+0100 (BST)");
     customDate.usageInSetup();
     var result = Date.parse("Thu Jun 26 2014 00:37:00 GMT+0100 (BST)");
     expect(result).toEqual(expected);
   });
-  it("should mock the \'Date.now()\' static method", function () {
+  it("should mock the \'Date.UTC()\' static method", function () {
     var expected = Date.UTC(2018, 11, 31, 23, 59, 50);
     customDate.usageInSetup();
     var result = Date.UTC(2018, 11, 31, 23, 59, 50);
